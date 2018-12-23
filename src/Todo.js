@@ -25,6 +25,13 @@ const removeTodo = del_id => {
   };
 };
 
+const updateTodo = update_todo => {
+  return {
+    type: "UPDATE_TODO",
+    update_todo
+  };
+};
+
 class Todo extends React.Component {
   constructor(props) {
     super(props);
@@ -65,6 +72,13 @@ class Todo extends React.Component {
     // alert(del_id);
     this.props.removeTodo(del_id);
   };
+
+  onEditClick = e => {
+    let clicked_index = e.target.parentNode.id;
+    let edit_todo = this.props.todoState.todoList[clicked_index];
+
+    alert(edit_todo.content);
+  };
   render() {
     // console.log(this.props);
     // console.log(this.state);
@@ -89,6 +103,10 @@ class Todo extends React.Component {
                 <a href="javascript:void(0);" onClick={this.onDelClick}>
                   del
                 </a>
+                &nbsp;|&nbsp;
+                <a href="javascript:void(0);" onClick={this.onEditClick}>
+                  edit
+                </a>
               </li>
             ))}
           </ul>
@@ -108,7 +126,8 @@ const mapDispatchToProps = dispatch => {
   return {
     addTodo: todo => dispatch(addTodo(todo)),
     resetTodo: () => dispatch(resetTodo()),
-    removeTodo: del_id => dispatch(removeTodo(del_id))
+    removeTodo: del_id => dispatch(removeTodo(del_id)),
+    updateTodo: update_todo => dispatch(updateTodo(update_todo))
   };
 };
 

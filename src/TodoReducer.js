@@ -8,6 +8,15 @@ export const TodoReducer = (state = { todoList: [] }, action) => {
         todoList: [...state.todoList, action.todo]
       };
     }
+    case "UPDATE_TODO": {
+      let new_todoList = state.todoList.map((el, index) => {
+        el.id === action.edit_todo.id ? (el = action.edit_todo) : el;
+      });
+
+      return {
+        todoList: new_todoList
+      };
+    }
     case "RESET_TODO": {
       return {
         todoList: []
