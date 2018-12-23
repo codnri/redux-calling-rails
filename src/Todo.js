@@ -40,8 +40,11 @@ class Todo extends React.Component {
       todo: {
         content: "",
         is_completed: "",
-        id: ""
-      }
+        id: "",
+        isEditing: false
+      },
+      editing_todo: {}
+
       // dummyList: ["aaa", "bbb"]
     };
   }
@@ -77,11 +80,33 @@ class Todo extends React.Component {
     let clicked_index = e.target.parentNode.id;
     let edit_todo = this.props.todoState.todoList[clicked_index];
 
-    alert(edit_todo.content);
+    //alert(edit_todo.content);
+    this.setState({ editing_todo: edit_todo });
+    // edit_todo.isEditing = true;
+    // this.setState({ todo: edit_todo });
+  };
+
+  onEditSaveClick = e => {
+    //dispatch update
+    let tmp_edit_todo = this.state.editing_todo;
+
+    this.props.updateTodo(tmp_edit_todo);
+    this.setState({ editing_todo: {} });
+  };
+
+  onEditCancelClick = e => {
+    this.setState({ editing_todo: {} });
+  };
+  onChangeEditInput = e => {
+    let tmp_todo = { ...this.state.editing_todo };
+    tmp_todo.content = e.target.value;
+    // console.log("----");
+    // console.log(tmp_todo);
+    this.setState({ editing_todo: tmp_todo });
   };
   render() {
-    // console.log(this.props);
-    // console.log(this.state);
+    console.log(this.props);
+    console.log(this.state);
 
     return (
       <div>
@@ -97,18 +122,47 @@ class Todo extends React.Component {
         </div>
         <div id="todo-list">
           <ul>
-            {this.props.todoState.todoList.map((todo, index) => (
-              <li key={index} id={index}>
-                {todo.content} &emsp;&emsp;&emsp;&emsp;
-                <a href="javascript:void(0);" onClick={this.onDelClick}>
-                  del
-                </a>
-                &nbsp;|&nbsp;
-                <a href="javascript:void(0);" onClick={this.onEditClick}>
-                  edit
-                </a>
-              </li>
-            ))}
+            {this.props.todoState.todoList.map((todo, index) => {
+              if (todo.id === this.state.editing_todo.id) {
+                return (
+                  <li>
+                    <div>
+                      <input
+                        type="text"
+                        value={this.state.editing_todo.content}
+                        onChange={this.onChangeEditInput}
+                      />
+                      <a
+                        href="javascript:void(0);"
+                        onClick={this.onEditSaveClick}
+                      >
+                        Save
+                      </a>
+                      &nbsp;|&nbsp;
+                      <a
+                        href="javascript:void(0);"
+                        onClick={this.onEditCancelClick}
+                      >
+                        Cancel
+                      </a>
+                    </div>
+                  </li>
+                );
+              } else {
+                return (
+                  <li key={index} id={index}>
+                    {todo.content} &emsp;&emsp;&emsp;&emsp;
+                    <a href="javascript:void(0);" onClick={this.onEditClick}>
+                      edit
+                    </a>
+                    &nbsp;|&nbsp;
+                    <a href="javascript:void(0);" onClick={this.onDelClick}>
+                      del
+                    </a>
+                  </li>
+                );
+              }
+            })}
           </ul>
         </div>
       </div>
