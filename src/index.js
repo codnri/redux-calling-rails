@@ -14,8 +14,8 @@ const store = createStore(
 function App() {
   return (
     <div className="App">
-      <h1>Hello CodeSandbox</h1>
-      <h2>Start editing to see some magic happen!</h2>
+      <h1>Welcome to Simple Todo App</h1>
+      <h2>What are you going to do?</h2>
       <Provider store={store}>
         <Todo />
       </Provider>
