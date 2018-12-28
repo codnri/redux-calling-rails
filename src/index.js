@@ -1,15 +1,17 @@
-import React, { Component } from "react";
+import React from "react";
 import ReactDOM from "react-dom";
 import { Provider } from "react-redux";
 // import App from './App';
-import { createStore, combineReducers } from "redux";
+import { createStore, combineReducers, applyMiddleware } from "redux";
+import thunkMiddleware from 'redux-thunk'
 import { TodoReducer } from "./TodoReducer";
 import Todo from "./Todo";
 
 const store = createStore(
   combineReducers({
-    todo: TodoReducer
-  })
+    todo: TodoReducer    
+  }),
+  applyMiddleware(thunkMiddleware)
 );
 function App() {
   return (

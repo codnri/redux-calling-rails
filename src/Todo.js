@@ -2,6 +2,10 @@
 import React from "react";
 import { connect } from "react-redux";
 import uuid from "uuid";
+import { fetchTodos } from './GetRequestActions';
+import {postTodo} from './PostRequestActions'
+
+//--------------------
 
 const addTodo = todo => {
   let tmp_todo = { ...todo };
@@ -48,14 +52,22 @@ class Todo extends React.Component {
       // dummyList: ["aaa", "bbb"]
     };
   }
+
+  componentDidMount() {
+    this.props.fetchTodos()
+    // console.log("res")
+    // console.log(this.props)
+  }
+
   clickResetButton = e => {
     // alert("hey");
     this.props.resetTodo();
   };
   clickAddButton = e => {
-    // alert("hey");
-    this.props.addTodo(this.state.todo);
-
+    // Storeに保存する
+    // this.props.addTodo(this.state.todo);
+    //requestを送る
+    this.props.postTodo(this.state.todo)
     //clear the Todo input field
     let tmp_todo = { ...this.state.todo };
     tmp_todo.content = "";
@@ -176,12 +188,19 @@ const mapStateToProps = state => {
   };
 };
 
+
+
 const mapDispatchToProps = dispatch => {
+  // console.log(fetchTodos())
   return {
     addTodo: todo => dispatch(addTodo(todo)),
     resetTodo: () => dispatch(resetTodo()),
     removeTodo: del_id => dispatch(removeTodo(del_id)),
-    updateTodo: update_todo => dispatch(updateTodo(update_todo))
+    updateTodo: update_todo => dispatch(updateTodo(update_todo)),
+    fetchTodos: ()=> dispatch(fetchTodos()),
+    postTodo: (todo)=> dispatch(postTodo(todo))
+    // onClickMinus: () => dispatch(actionDecrementAsync()),
+
   };
 };
 
